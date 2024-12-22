@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-cd-backend
+spec:
+  params:
+    - name: git-url
+      description: URL of the GitHub repository
+      default: https://github.com/MorgrotSK/zauni-zadanie-helm-charts-2024
+    - name: git-revision
+      description: Branch or commit hash to clone
+      default: main
+    - name: release-name
+      description: Name of the Helm release
+      default: zauni-zadanie-2024-be
+    - name: namespace
+      description: Kubernetes namespace to deploy to
+      default: default
+    - name: charts-dir
+      description: Path to the local directory containing the Helm chart
+      default: /workspace/source/charts/backend/
+  workspaces:
+    - name: shared-workspace
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: "$(params.git-url)"
+        - name: revision
+          value: "$(params.git-revision)"
+        - name: subdirectory
+          value: ""
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+    - name: deploy-helm
+      runAfter:
+        - clone-repo
+      taskRef:
+        name: helm-upgrade-from-source
+      params:
+        - name: release_name
+          value: "$(params.release-name)"
+        - name: namespace
+          value: "$(params.namespace)"
+        - name: charts_dir
+          value: "$(params.charts-dir)"
+      workspaces:
+        - name: source
+          workspace: shared-workspace

@@ -1,0 +1,22 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: tekton-role
+  namespace: default
+rules:
+  # Existing rules for secrets
+  - apiGroups: [""]
+    resources: ["services", "namespaces", "secrets", "serviceaccounts", "configmaps"]
+    verbs: ["get", "create", "update", "patch", "list", "delete"]
+  # rules for networkpolicies
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["get", "list", "create", "update", "patch", "delete"]
+  # permissions for poddisruptionbudgets
+  - apiGroups: ["policy"]
+    resources: ["poddisruptionbudgets"]
+    verbs: ["get", "list", "create", "update", "patch", "delete"]
+
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "create", "update", "patch", "list"]
