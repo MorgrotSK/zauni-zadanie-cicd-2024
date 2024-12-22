@@ -16,6 +16,9 @@ The CI pipelines are defined and integrated directly within the respective repos
 - **Repository**: [zauni-zadanie-appbackend-2024](https://github.com/MorgrotSK/zauni-zadanie-appbackend-2024)
 - **Purpose**: Similar to the frontend, this CI pipeline automates the build, test, and deployment processes for the backend application, ensuring that any changes made to the backend repository are thoroughly tested and packaged for deployment.
 
+### CD Pipeline
+The CD pipeline, **Tekton Pipelines** contained within here and needs to be deployed into kubernets cluster.
+
 ## Repository Links
 
 - [Frontend GitHub Repository](https://github.com/MorgrotSK/zauni-zadanie-appfrontend-2024)
